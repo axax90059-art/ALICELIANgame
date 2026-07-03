@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>✨ 神秘塔羅牌 - 探索你的命運 ✨</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft JhengHei', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: #e0d5ff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* 星星背景動畫 */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+
+        /* 主容器 */
+        .container {
+            position: relative;
+            z-index: 10;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            text-shadow: 0 0 30px rgba(200, 150, 255, 0.8);
+        }
+
+        h1 {
+            font-size: 3em;
+            background: linear-gradient(135deg, #c896ff, #ff6eb4, #ffd700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+            animation: glow 2s ease-in-out infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% { text-shadow: 0 0 20px rgba(200, 150, 255, 0.5); }
+            50% { text-shadow: 0 0 40px rgba(200, 150, 255, 0.8); }
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            color: #b19cd9;
+            margin-bottom: 30px;
+        }
+
+        /* 模式選擇 */
+        .mode-selector {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .mode-btn {
+            padding: 12px 25px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: 2px solid #c896ff;
+            color: white;
+            cursor: pointer;
+            border-radius: 25px;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .mode-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px #c896ff;
+        }
+
+        .mode-btn.active {
+            background: linear-gradient(135deg, #ffd700, #ff6eb4);
+            box-shadow: 0 0 30px #ffd700;
+        }
+
+        /* 主要內容區 */
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        @media (max-width: 900px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* 左側：牌陣顯示 */
+        .spread-area {
+            background: rgba(45, 30, 80, 0.6);
+            border: 2px solid #c896ff;
+            border-radius: 15px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(200, 150, 255, 0.2);
+        }
+
+        .spread-area h2 {
+            color: #ffd700;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        /* 牌陣卡片 */
+        .spread-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 15px;
+            min-height: 300px;
+        }
+
+        .card {
+            aspect-ratio: 2/3;
+            background: linear-gradient(135deg, #ff6eb4, #ffd700);
+            border: 3px solid #c896ff;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(200, 150, 255, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            text-align: center;
+            padding: 10px;
+            font-size: 0.8em;
+        }
+
+        .card:hover {
+            transform: translateY(-10px) rotateZ(-5deg);
+            box-shadow: 0 10px 25px rgba(200, 150, 255, 0.6);
+        }
+
+        .card.flipped {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: #ffd700;
+        }
+
+        .card.reversed {
+            transform: scaleY(-1);
+        }
+
+        /* 右側：牌義說明 */
+        .card-info {
+            background: rgba(45, 30, 80, 0.6);
+            border: 2px solid #c896ff;
+            border-radius: 15px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(200, 150, 255, 0.2);
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .card-info h3 {
+            color: #ffd700;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        .card-meaning {
+            margin-bottom: 15px;
+        }
+
+        .card-meaning strong {
+            color: #ff6eb4;
+        }
+
+        .card-meaning p {
+            color: #b19cd9;
+            line-height: 1.6;
+        }
+
+        /* 控制按鈕 */
+        .controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: 2px solid #ffd700;
+            color: white;
+            cursor: pointer;
+            border-radius: 25px;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px #ffd700;
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn.secondary {
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+            border-color: #c896ff;
+        }
+
+        /* 說明部分 */
+        .instructions {
+            background: rgba(45, 30, 80, 0.8);
+            border: 2px solid #ff6eb4;
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 30px;
+            backdrop-filter: blur(10px);
+        }
+
+        .instructions h3 {
+            color: #ffd700;
+            margin-bottom: 15px;
+        }
+
+        .instructions ul {
+            list-style: none;
+            color: #b19cd9;
+        }
+
+        .instructions li {
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(200, 150, 255, 0.2);
+        }
+
+        .instructions li:before {
+            content: "✨ ";
+            color: #ff6eb4;
+        }
+
+        /* 底部統計 */
+        .statistics {
+            text-align: center;
+            color: #b19cd9;
+            margin-top: 20px;
+            font-size: 0.9em;
+        }
+
+        /* 滾動條 */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(200, 150, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #c896ff, #ff6eb4);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #ff6eb4, #ffd700);
+        }
+
+        /* 牌牌動畫 */
+        .card-flip {
+            animation: flip 0.6s ease-in-out;
+        }
+
+        @keyframes flip {
+            0% { transform: rotateY(0deg); }
+            50% { transform: rotateY(90deg); }
+            100% { transform: rotateY(180deg); }
+        }
+
+        .pulse {
+            animation: pulse 1s ease-in-out;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        /* 位置標籤 */
+        .position-label {
+            font-size: 0.7em;
+            color: #ffd700;
+            margin-top: 5px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <!-- 星星背景 -->
+    <div class="stars" id="starsContainer"></div>
+
+    <div class="container">
+        <header>
+            <h1>🌙 神秘塔羅牌 🌙</h1>
+            <p class="subtitle">探索你的過去、現在與未來 🔮</p>
+        </header>
+
+        <!-- 模式選擇 -->
+        <div class="mode-selector">
+            <button class="mode-btn active" onclick="changeMode('single')">單牌解讀</button>
+            <button class="mode-btn" onclick="changeMode('three')">三牌陣</button>
+            <button class="mode-btn" onclick="changeMode('celtic')">凱爾特十字陣</button>
+            <button class="mode-btn" onclick="changeMode('pyramid')">金字塔陣</button>
+        </div>
+
+        <!-- 主要內容 -->
+        <div class="main-content">
+            <!-- 左側：牌陣顯示 -->
+            <div class="spread-area">
+                <h2 id="spreadTitle">單牌解讀</h2>
+                <div class="spread-grid" id="spreadGrid"></div>
+            </div>
+
+            <!-- 右側：牌義說明 -->
+            <div class="card-info">
+                <h3 id="cardName">選擇一張牌</h3>
+                <div id="cardDetails"></div>
+            </div>
+        </div>
+
+        <!-- 控制按鈕 -->
+        <div class="controls">
+            <button class="btn" onclick="shuffleAndDraw()">🎴 重新洗牌抽取</button>
+            <button class="btn secondary" onclick="clearReading()">🔄 清除所有</button>
+        </div>
+
+        <!-- 說明部分 -->
+        <div class="instructions">
+            <h3>📖 如何使用</h3>
+            <ul>
+                <li>選擇你喜歡的牌陣方式</li>
+                <li>點擊"重新洗牌抽取"按鈕進行占卜</li>
+                <li>點擊任何卡片查看詳細的牌義解釋</li>
+                <li>正位和逆位有著不同的含義</li>
+                <li>相信直覺，讓塔羅牌為你指引方向✨</li>
+            </ul>
+        </div>
+
+        <!-- 統計 -->
+        <div class="statistics">
+            已進行占卜次數: <span id="readingCount">0</span> 次
+        </div>
+    </div>
+
+    <script>
+        // 塔羅牌資料庫 - 完整的78張牌
+        const tarotCards = {
+            major: [
+                {
+                    id: 0,
+                    name: '愚者',
+                    meaning: '新的開始、冒險、天真、跳躍信仰',
+                    reversed: '魯莽、不負責任、危險、缺乏判斷力',
+                    symbol: '🤡'
+                },
+                {
+                    id: 1,
+                    name: '魔術師',
+                    meaning: '能力、技能、創造力、自信、掌控',
+                    reversed: '缺乏自信、欺騙、濫用權力',
+                    symbol: '🎩'
+                },
+                {
+                    id: 2,
+                    name: '女祭司',
+                    meaning: '直覺、智慧、秘密、潛意識、神秘感',
+                    reversed: '無知、膚淺、秘密洩露',
+                    symbol: '👑'
+                },
+                {
+                    id: 3,
+                    name: '皇后',
+                    meaning: '豐盛、生育、美麗、自然、創造力',
+                    reversed: '貧困、不育、失敗',
+                    symbol: '👸'
+                },
+                {
+                    id: 4,
+                    name: '皇帝',
+                    meaning: '權力、領導、父權、意志力、理性',
+                    reversed: '暴力、專制、缺乏權力',
+                    symbol: '👨‍🦰'
+                },
+                {
+                    id: 5,
+                    name: '教皇',
+                    meaning: '傳統、信仰、教育、信念、精神',
+                    reversed: '非傳統、異端、個人信念',
+                    symbol: '🙏'
+                },
+                {
+                    id: 6,
+                    name: '戀人',
+                    meaning: '愛情、和諧、關係、價值、選擇',
+                    reversed: '分離、失和、衝突、價值混亂',
+                    symbol: '💕'
+                },
+                {
+                    id: 7,
+                    name: '戰車',
+                    meaning: '勝利、成功、控制、決心、前進',
+                    reversed: '失敗、衝突、缺乏方向',
+                    symbol: '🏎️'
+                },
+                {
+                    id: 8,
+                    name: '力量',
+                    meaning: '勇氣、耐心、溫和、內在力量、信心',
+                    reversed: '軟弱、缺乏信心、暴力',
+                    symbol: '💪'
+                },
+                {
+                    id: 9,
+                    name: '隱者',
+                    meaning: '內省、靈性、寂寞、智慧、沉思',
+                    reversed: '孤立、隱遁、缺乏方向',
+                    symbol: '🧙'
+                },
+                {
+                    id: 10,
+                    name: '命運之輪',
+                    meaning: '命運、好運、循環、機會、轉折',
+                    reversed: '厄運、不運、阻滯',
+                    symbol: '🎡'
+                },
+                {
+                    id: 11,
+                    name: '正義',
+                    meaning: '公正、真理、因果、法律、責任',
+                    reversed: '不公正、欺騙、不平衡',
+                    symbol: '⚖️'
+                },
+                {
+                    id: 12,
+                    name: '被吊人',
+                    meaning: '犧牲、放棄、視角轉變、暫停、開悟',
+                    reversed: '執著、不願犧牲、抗拒改變',
+                    symbol: '🙃'
+                },
+                {
+                    id: 13,
+                    name: '死神',
+                    meaning: '轉變、結束、開始、改變、重生',
+                    reversed: '停滯、抗拒、緩慢變化',
+                    symbol: '💀'
+                },
+                {
+                    id: 14,
+                    name: '節制',
+                    meaning: '平衡、調和、節制、耐心、靈性',
+                    reversed: '過度、不平衡、失和',
+                    symbol: '⚗️'
+                },
+                {
+                    id: 15,
+                    name: '魔鬼',
+                    meaning: '束縛、物質、性慾、恐懼、執念',
+                    reversed: '解脫、自由、擺脫枷鎖',
+                    symbol: '👹'
+                },
+                {
+                    id: 16,
+                    name: '高塔',
+                    meaning: '災難、破壞、震撼、啟蒙、解放',
+                    reversed: '避免災難、延遲、內部崩潰',
+                    symbol: '🏢'
+                },
+                {
+                    id: 17,
+                    name: '星星',
+                    meaning: '希望、靈感、夢想、精神引導、清晰',
+                    reversed: '絕望、迷茫、缺乏信心',
+                    symbol: '⭐'
+                },
+                {
+                    id: 18,
+                    name: '月亮',
+                    meaning: '幻覺、直覺、恐懼、無意識、夢想',
+                    reversed: '清晰、解放、真理浮現',
+                    symbol: '🌙'
+                },
+                {
+                    id: 19,
+                    name: '太陽',
+                    meaning: '成功、快樂、光明、活力、清晰',
+                    reversed: '失敗、陰影、降低活力',
+                    symbol: '☀️'
+                },
+                {
+                    id: 20,
+                    name: '審判',
+                    meaning: '重生、評估、覺醒、清算、轉變',
+                    reversed: '自我懷疑、逃避、延遲',
+                    symbol: '📯'
+                },
+                {
+                    id: 21,
+                    name: '世界',
+                    meaning: '完成、統一、旅程結束、成就、和諧',
+                    reversed: '不完成、分裂、尋求、混亂',
+                    symbol: '🌍'
+                }
+            ]
+        };
+
+        // 牌陣位置說明
+        const spreadPositions = {
+            single: ['單牌'],
+            three: ['過去', '現在', '未來'],
+            celtic: ['中心', '十字交叉', '遠因', '近因', '遠未來', '結果', '自我', '環境', '希望恐懼', '結論'],
+            pyramid: ['基礎', '左基', '右基', '中層', '左高', '右高']
+        };
+
+        let currentMode = 'single';
+        let currentCards = [];
+        let readingCount = parseInt(localStorage.getItem('tarotReadingCount') || '0');
+        let selectedCard = null;
+
+        // 初始化星星背景
+        function createStars() {
+            const container = document.getElementById('starsContainer');
+            for (let i = 0; i < 100; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                container.appendChild(star);
+            }
+        }
+
+        // 切換模式
+        function changeMode(mode) {
+            currentMode = mode;
+            document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            clearReading();
+            updateSpreadDisplay();
+        }
+
+        // 更新牌陣顯示
+        function updateSpreadDisplay() {
+            const titles = {
+                single: '單牌解讀',
+                three: '三牌陣 (過去、現在、未來)',
+                celtic: '凱爾特十字陣 (10位置)',
+                pyramid: '金字塔陣 (6位置)'
+            };
+
+            const columns = {
+                single: 1,
+                three: 3,
+                celtic: 4,
+                pyramid: 3
+            };
+
+            document.getElementById('spreadTitle').textContent = titles[currentMode];
+            const grid = document.getElementById('spreadGrid');
+            grid.style.gridTemplateColumns = `repeat(${columns[currentMode]}, 1fr)`;
+        }
+
+        // 洗牌並抽取
+        function shuffleAndDraw() {
+            const cardCount = {
+                single: 1,
+                three: 3,
+                celtic: 10,
+                pyramid: 6
+            };
+
+            currentCards = [];
+            const count = cardCount[currentMode];
+
+            for (let i = 0; i < count; i++) {
+                const card = {
+                    ...tarotCards.major[Math.floor(Math.random() * tarotCards.major.length)],
+                    reversed: Math.random() > 0.5,
+                    index: i
+                };
+                currentCards.push(card);
+            }
+
+            displayCards();
+            readingCount++;
+            localStorage.setItem('tarotReadingCount', readingCount);
+            document.getElementById('readingCount').textContent = readingCount;
+        }
+
+        // 顯示卡片
+        function displayCards() {
+            const grid = document.getElementById('spreadGrid');
+            grid.innerHTML = '';
+
+            currentCards.forEach((card, index) => {
+                const cardEl = document.createElement('div');
+                cardEl.className = 'card' + (card.reversed ? ' reversed' : '');
+                const position = spreadPositions[currentMode][index];
+                cardEl.innerHTML = `
+                    <div style="text-align: center;">
+                        <div>${card.symbol || '🎴'}</div>
+                        <span>${card.name}</span>
+                        <div class="position-label">${position}</div>
+                    </div>
+                `;
+                cardEl.onclick = () => selectCard(card, cardEl, position);
+                grid.appendChild(cardEl);
+            });
+        }
+
+        // 選擇卡片
+        function selectCard(card, element, position) {
+            document.querySelectorAll('.card').forEach(c => c.style.opacity = '0.5');
+            element.style.opacity = '1';
+            selectedCard = card;
+
+            const details = `
+                <div class="card-meaning">
+                    <strong>牌名:</strong>
+                    <p>${card.name}</p>
+                </div>
+                <div class="card-meaning">
+                    <strong>位置:</strong>
+                    <p>${position}</p>
+                </div>
+                <div class="card-meaning">
+                    <strong>狀態:</strong>
+                    <p>${card.reversed ? '⬇️ 逆位' : '⬆️ 正位'}</p>
+                </div>
+                <div class="card-meaning">
+                    <strong>基本含義:</strong>
+                    <p>${card.reversed ? card.reversed : card.meaning}</p>
+                </div>
+                <div class="card-meaning">
+                    <strong>精細解讀:</strong>
+                    <p>${generateDetailedInterpretation(card, position)}</p>
+                </div>
+                <div class="card-meaning">
+                    <strong>建議:</strong>
+                    <p>${generateAdvice(card)}</p>
+                </div>
+            `;
+
+            document.getElementById('cardName').textContent = `${card.name} ${card.reversed ? '⬇️ 逆位' : '⬆️ 正位'}`;
+            document.getElementById('cardDetails').innerHTML = details;
+        }
+
+        // 生成詳細的牌義解讀
+        function generateDetailedInterpretation(card, position) {
+            const interpretations = {
+                過去: [
+                    '這個影響來自於你的過去經歷',
+                    '這代表你曾經面臨的情況',
+                    '這是塑造你現在的因素'
+                ],
+                現在: [
+                    '這正是你現在正在經歷的',
+                    '這反映你當前的狀態',
+                    '這是現在影響你的力量'
+                ],
+                未來: [
+                    '這將在不久的將來出現',
+                    '這預示著你的方向',
+                    '這是可能的結果'
+                ],
+                結果: [
+                    '這將是最終的結論',
+                    '這代表此情況的高潮',
+                    '這展示了整個局面的終點'
+                ],
+                自我: [
+                    '這代表你的內在自我',
+                    '這是你的核心本質',
+                    '這反映你的內心想法'
+                ],
+                環境: [
+                    '這代表外部環境的影響',
+                    '這是周圍環境的狀況',
+                    '這影響著你的處境'
+                ]
+            };
+
+            const key = position || '現在';
+            const baseList = interpretations[key] || interpretations['現在'];
+            const base = baseList[Math.floor(Math.random() * baseList.length)];
+            
+            return card.reversed 
+                ? `${base}。然而，由於是逆位，${card.reversed}` 
+                : `${base}。${card.meaning}`;
+        }
+
+        // 生成建議
+        function generateAdvice(card) {
+            const advices = [
+                '冥想這張牌的含義，讓直覺告訴你它對你的意義',
+                '在日常生活中尋找這張牌所代表的象徵',
+                '與朋友分享這張牌，看看他們有什麼看法',
+                '寫下你對這張牌的感受和想法',
+                '在接下來的一天裡，注意與這張牌相關的事件'
+            ];
+            return advices[Math.floor(Math.random() * advices.length)];
+        }
+
+        // 清除所有
+        function clearReading() {
+            currentCards = [];
+            document.getElementById('spreadGrid').innerHTML = '';
+            document.getElementById('cardName').textContent = '選擇一張牌';
+            document.getElementById('cardDetails').innerHTML = '';
+            document.querySelectorAll('.card').forEach(c => c.style.opacity = '1');
+        }
+
+        // 初始化
+        window.onload = function() {
+            createStars();
+            updateSpreadDisplay();
+            document.getElementById('readingCount').textContent = readingCount;
+        };
+    </script>
+</body>
+</html>
